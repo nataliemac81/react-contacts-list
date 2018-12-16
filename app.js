@@ -1,9 +1,17 @@
 
+// Data
+
 var contacts = [
 {key: 1, name: "James K. Nelson", email: "james@jamesknelson.com", description: "Front-end Unicorn"},
 {key: 2, name: "Jim", email: "jim@example.com"},
 {key: 3, name: "Joe"},
 ]
+
+var newContact = {name: " ", email: " ", description: " "}
+
+
+// Components
+
 
 var ContactItem = React.createClass({
   propTypes: {
@@ -22,6 +30,35 @@ var ContactItem = React.createClass({
   }
 });
 
+var ContactForm = React.createClass({
+  propTypes: {
+    contact: React.PropTypes.object.isRequired
+  },
+  render: function(){
+    return (
+      React.createElement('form', {},
+        React.createElement('input', {
+          type: 'text',
+          placeholder: 'Name (*required)',
+          value: this.props.contact.name,
+        }),
+        React.createElement('input', {
+          type: 'email',
+          placeholder: 'Email',
+          value: this.props.contact.email,
+        }),
+        React.createElement('textarea', {
+          placeholder: 'Description',
+          value: this.props.contact.description,
+        }),
+        React.createElement('button', {type: 'submit'}, "Add Contact")
+      )
+    )
+  },
+
+});
+
+
 var contactList = contacts
   .filter(function(contact) { return contact.email; })
   .map(function(contact){ return React.createElement(ContactItem, contact)
@@ -31,7 +68,8 @@ var contactList = contacts
 var rootElement =
   React.createElement('div', {},
     React.createElement('h1', {}, "Contacts"),
-    React.createElement('ul', {}, contactList)
+    React.createElement('ul', {}, contactList),
+    React.createElement(ContactForm, {contact: newContact})
   )
 
 ReactDOM.render(rootElement, document.getElementById('react-app'))
